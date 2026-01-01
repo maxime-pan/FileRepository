@@ -1,5 +1,7 @@
 
+
 using FileGallery.Services;
+
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -8,12 +10,14 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace FileRepository.Controllers
+
+namespace FileGallery.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IFileRepository _repo;
         public AccountController(IFileRepository repo) => _repo = repo;
+
 
         [HttpGet]
         public IActionResult Login(string? returnUrl)
@@ -21,6 +25,7 @@ namespace FileRepository.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password, string? returnUrl)
@@ -39,13 +44,16 @@ namespace FileRepository.Controllers
             return RedirectToAction("Index", "Admin", new { area = "Admin" });
         }
 
+
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
 
+
         public IActionResult AccessDenied() => View();
+
 
         private static string ComputeSha256Hash(string raw)
         {
