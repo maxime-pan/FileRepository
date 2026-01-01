@@ -1,0 +1,13 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Anonymous Upload</h2>
+@if (TempData["UploadMessage"] != null)
+{
+    <div class="msg">@TempData["UploadMessage"]</div>
+}
+<form method="post" enctype="multipart/form-data">
+    <input type="file" name="file" />
+    <button type="submit">Upload</button>
+</form>
+<p>Your file will be stored in a non-public folder for admin review.</p>

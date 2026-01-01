@@ -1,0 +1,29 @@
+@model List<FileGallery.Models.FileItem>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var categories = ViewBag.Categories as List<FileGallery.Models.Category> ?? new();
+    int? selected = ViewBag.SelectedCategoryId as int?;
+}
+<div class="container">
+    <aside class="left">
+        <h3>Categories</h3>
+        <ul class="cats">
+            @foreach (var c in categories)
+            {
+                <li class="@(selected == c.Id ? "active" : "")"><a href="/@("?categoryId=" + c.Id)">@c.Name</a></li>
+            }
+        </ul>
+    </aside>
+    <section class="right">
+        <h3>Files</h3>
+        <ul class="filelist">
+        @foreach (var f in Model)
+        {
+            <li>
+                <a target="_blank" href="/Files/Preview/@f.Id">@f.FileName</a>
+                <small>(@((f.SizeBytes/1024.0/1024.0).ToString("0.00")) MB)</small>
+            </li>
+        }
+        </ul>
+    </section>
+</div>

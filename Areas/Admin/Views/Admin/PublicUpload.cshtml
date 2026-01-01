@@ -1,0 +1,38 @@
+@model IEnumerable< FileGallery.Models.FileItem>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Public Uploads";
+}
+<h1>Public Uploads (Anonymous)</h1>
+@if (TempData["Message"] != null) { <div class="alert alert-success">@TempData["Message"]</div> }
+@if (TempData["Error"] != null) { <div class="alert alert-danger">@TempData["Error"]</div> }
+<table class="table table-striped">
+  <thead><tr><th>File</th><th>Uploaded</th><th>Preview</th><th>Move to Category</th><th>Delete</th></tr></thead>
+  <tbody>
+  @foreach (var f in Model)
+  {
+    <tr>
+      <td>@f.FileName</td>
+      <td>@f.Uploaded.ToLocalTime()</td>
+      <td><a class="btn btn-sm btn-outline-primary" href="@Url.Action("Preview","File", new { id = f.Id })" target="_blank">Preview</a></td>
+      <td>
+        <form method="post" asp-area="Admin" asp-controller="Admin" asp-action="MovePublicToCategory">
+          <input type="hidden" name="fileId" value="@f.Id" />
+          <select name="categoryId" class="form-select form-select-sm d-inline w-auto">
+                            @foreach (var c in ((IEnumerable<FileGallery.Models.Category>)ViewBag.Categories))
+            {
+              <option value="@c.Id">@c.Name</option>
+            }
+          </select>
+          <button class="btn btn-sm btn-success">Move</button>
+        </form>
+      </td>
+      <td>
+        <form method="post" asp-area="Admin" asp-controller="Admin" asp-action="DeleteFile" asp-route-id="@f.Id" onsubmit="return confirm('Delete file?')">
+          <button class="btn btn-sm btn-outline-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+  }
+  </tbody>
+</table>

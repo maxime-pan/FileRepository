@@ -1,0 +1,22 @@
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Admin Login";
+}
+<h1>Admin Login</h1>
+<form method="post" class="mt-3" asp-controller="Account" asp-action="Login">
+  <div class="mb-3">
+    <label class="form-label">Username</label>
+    <input name="username" class="form-control" value="admin" />
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Password</label>
+    <input name="password" type="password" class="form-control" value="Admin#123" />
+  </div>
+  <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+  <button type="submit" class="btn btn-primary">Login</button>
+</form>
+@if (!ViewData.ModelState.IsValid)
+{
+  <div class="alert alert-danger mt-3">Invalid credentials</div>
+}

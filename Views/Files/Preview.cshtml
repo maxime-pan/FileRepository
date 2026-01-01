@@ -1,0 +1,34 @@
+@model FileGallery.Models.FileItem
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ext = System.IO.Path.GetExtension(Model.FileName).ToLowerInvariant();
+}
+<div class="preview">
+    <div class="actions"><a href="/Files/Download/@Model.Id">Download</a></div>
+    <h2>@Model.FileName</h2>
+    @if (new[]{".png",".jpg",".jpeg",".gif"}.Contains(ext))
+    {
+        <img src="/Files/Download/@Model.Id" alt="preview" style="max-width:100%;height:auto;" />
+    }
+    else if (ext == ".pdf")
+    {
+        <iframe src="/Files/Download/@Model.Id" style="width:100%;height:80vh;"></iframe>
+    }
+    else if (new[]{".txt",".csv",".md"}.Contains(ext))
+    {
+        var content = System.IO.File.ReadAllText(Model.PhysicalPath);
+        <pre>@content</pre>
+    }
+    else if (new[]{".mp4",".webm"}.Contains(ext))
+    {
+        <video src="/Files/Download/@Model.Id" controls style="width:100%"></video>
+    }
+    else if (new[]{".mp3",".wav"}.Contains(ext))
+    {
+        <audio src="/Files/Download/@Model.Id" controls></audio>
+    }
+    else
+    {
+        <p>Preview not supported for this file type. Please download.</p>
+    }
+</div>
